@@ -10,6 +10,9 @@ from ropo import ROPO
 from rogp.util.numpy import _to_np_obj_array, _pyomo_to_np
 
 
+eps = 0.0001
+
+
 class Model():
     def __init__(self):
         pass
@@ -110,7 +113,7 @@ class Deterministic(Model):
             if not isinstance(Xvar[i], (float, int)):
                 R = 0
             # Add degradation in current segment
-            dt = delta[x] / (self.m.rop[x].V + 0.001)
+            dt = delta[x] / (self.m.rop[x].V + eps)
             dp = self.m.rop[x].deltap
             # If GP is warped also pass var and cons list for implicit def
             if isinstance(fc, curves.WarpedGP):
@@ -130,7 +133,7 @@ class Deterministic(Model):
         Xvar = self.Xvar
         delta = {X[i]: Xvar[i+1] - Xvar[i] for i in range(len(X) - 1)}
         self.delta = delta
-        cost_drilling = sum([delta[x]/(self.m.rop[x].V + 0.001)
+        cost_drilling = sum([delta[x]/(self.m.rop[x].V + eps)
                              for x in self.X[0:-1]])
         self.m.cons.add(self.m.cost_drill == cost_drilling)
         # Cost of/time spent on maintenance
@@ -227,8 +230,7 @@ class Wolfe(Deterministic):
         delta = {self.X[j]: Xvar[j+1] - Xvar[j] for j in range(k, i)}
         dp = [[m.rop[x].deltap] for x in X]
         dp = _to_np_obj_array(dp)
-        # TODO: make eps = 0.001 a parameter
-        dt = [[delta[x]/(m.rop[x].V + 0.001)] for x in X]
+        dt = [[delta[x]/(m.rop[x].V + eps)] for x in X]
         dt = _to_np_obj_array(dt)
         r = _pyomo_to_np(m.r, ind=X)
 

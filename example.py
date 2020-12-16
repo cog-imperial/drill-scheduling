@@ -2,6 +2,7 @@ import curves
 import tools
 import geology
 import algorithms
+import sep
 import scheduling.continuous as sc
 import numpy as np
 
@@ -36,18 +37,10 @@ if __name__ == '__main__':
                                          [4000., 20.]]))
 
     # Geology
-    rock1 = geology.Rock(278, 330, 125, 0.48, 157, 0.98)
-    rock2 = geology.Rock(315, 68.6, 50, 0.93, 33, 0.65)
-    geo = geology.Geology({0: rock2,
-                           100: rock1,
-                           200: rock2,
-                           400: rock1,
-                           550: rock2,
-                           800: rock1,
-                           1800: rock2,
-                           2000: rock1,
-                           2500: rock2,
-                           2600: rock1})
+    rock1 = geology.Rock(315, 68.6, 50, 0.93, 33, 0.65)
+    rock2 = geology.Rock(278, 330, 125, 0.48, 157, 0.98)
+    geo = geology.Geology({0: rock1,
+                           800: rock2})
 
     # Enumeration
     algo = algorithms.enum
@@ -63,6 +56,4 @@ if __name__ == '__main__':
     # scheduler = sc.Wolfe(geo, drillstring, cost_maint, xfin=3500, alpha=0.95)
     scheduler.build()
     scheduler, obj = algo(scheduler)
-
-    # Analysis
-    convex = sep.check_feasibility(scheduler, bb=True)
+    scheduler.print_schedule()

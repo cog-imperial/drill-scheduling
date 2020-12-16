@@ -78,7 +78,7 @@ class Deterministic():
         R = 0
         fc = self.drillstring.pdm.failure
         for x in self.Xlist:
-            dt = self.delta[x] / (self.m.rop[x].V + 0.001)
+            dt = self.delta[x] / (self.m.rop[x].V + self.eps)
             dp = self.m.rop[x].deltap
             if isinstance(fc, curves.WarpedGP):
                 r = fc(dp, self.m.r[x], self.m.cons)
@@ -97,7 +97,7 @@ class Deterministic():
         """ Add objective to model. """
         # Cost of/time spent drilling
         self.m.cost_drill = p.Var()
-        cost_drilling = sum([self.delta[x]/(self.m.rop[x].V + 0.001)
+        cost_drilling = sum([self.delta[x]/(self.m.rop[x].V + self.eps)
                              for x in self.X])
         self.m.cons.add(self.m.cost_drill == cost_drilling)
         # Cost of/time spent on maintenance
@@ -192,18 +192,18 @@ class Wolfe(Deterministic):
         r = 0
         pad = 0
         for x in self.Xlist:
-            dt = self.delta[x] / (self.m.rop[x].V + 0.001)
+            dt = self.delta[x] / (self.m.rop[x].V + self.eps)
             dp = self.m.rop[x].deltap
             r += self.drillstring.pdm.degradation(dt, dp)
             r -= self.m.y[x]
             F = sp.stats.norm.ppf(self.alpha)
             pad += dt*self.drillstring.pdm.failure.calc_var(dp)*dt
             for xp in [xi for xi in self.Xlist if xi < x]:
-                dtp = self.delta[xp] / (self.m.rop[xp].V + 0.001)
+                dtp = self.delta[xp] / (self.m.rop[xp].V + self.eps)
                 dpp = self.m.rop[xp].deltap
                 sig = self.drillstring.pdm.failure.calc_var(dp, dpp)
                 pad += 2*dt*sig*dtp
-            self.m.cons.add(r + F*p.sqrt(pad + 0.0001) <= 1)
+            self.m.cons.add(r + F*p.sqrt(pad + self.eps) <= 1)
             # self.m.cons.add(r + F*p.sqrt(0.0001) <= 1)
             # 0 <= R_x <= 1 for all x
             self.m.cons.add(self.m.R[x] == r)
@@ -244,7 +244,7 @@ class Chance(Deterministic):
         r = 0
         var = 0
         for x in self.Xlist:
-            dt = self.delta[x]/(self.m.rop[x].V + 0.001)
+            dt = self.delta[x]/(self.m.rop[x].V + self.eps)
             dp = self.m.rop[x].deltap
             r += self.drillstring.pdm.degradation(dt, dp)
             var += self.drillstring.pdm.variance(dt, dp)
@@ -282,7 +282,7 @@ class Gamma(Deterministic):
             rhs = 0
             lhs = 1
             for x2 in [xi for xi in self.Xlist if xi <= x]:
-                dt = self.delta[x2]/(self.m.rop[x2].V + 0.001)
+                dt = self.delta[x2]/(self.m.rop[x2].V + self.eps)
                 dp = self.m.rop[x2].deltap
                 mu = self.drillstring.pdm.degradation(dt, dp)
                 sig = self.drillstring.pdm.sig(dt, dp)
