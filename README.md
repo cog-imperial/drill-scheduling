@@ -2,7 +2,7 @@
 This repository contains an implementation of the drill scheduling problem
 outlined in Section 3.2 of [A robust approach to warped Gaussian process-constrained optimization](https://arxiv.org/abs/2006.08222).
 
-If you use this work, please cite our work as:
+If you use this work, please cite our paper:
 
     @misc{Wiebe2020robust,
           title={A robust approach to warped Gaussian process-constrained optimization}, 
