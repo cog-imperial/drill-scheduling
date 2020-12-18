@@ -2,6 +2,17 @@
 This repository contains an implementation of the drill scheduling problem
 outlined in Section 3.2 of [A robust approach to warped Gaussian process-constrained optimization](https://arxiv.org/abs/2006.08222).
 
+If you use this work, please cite our work as:
+
+    @misc{Wiebe2020robust,
+          title={A robust approach to warped Gaussian process-constrained optimization}, 
+          author={Johannes Wiebe and Inês Cecílio and Jonathan Dunlop and Ruth Misener},
+          year={2020},
+          eprint={2006.08222},
+          archivePrefix={arXiv},
+          primaryClass={math.OC}
+    }
+
 The drill scheduling problem is an optimization problem which attempts to
 minimize the total completion time of drilling a well. It considers:
 
@@ -137,3 +148,5 @@ This work was funded by the Engineering & Physical Sciences Research Council
 (EPSRC) Center for Doctoral Training in High Performance Embedded and
 Distributed Systems (EP/L016796/1) and an EPSRC/Schlumberger CASE studentship
 (EP/R511961/1, voucher 17000145).
+
+Author: Johannes Wiebe
