@@ -1,5 +1,5 @@
 # Background
-:copyright: 2020, Johannes Wiebe. Refer to [License](LICENSE).
+:copyright: 2021, Johannes Wiebe. Refer to [License](LICENSE).
 
 This repository contains an implementation of the drill scheduling problem
 outlined in Section 3.2 of [A robust approach to warped Gaussian process-constrained optimization](https://arxiv.org/abs/2006.08222).
